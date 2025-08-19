@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import QRCode from "react-qr-code";
 import Link from "next/link";
+import ClientOnly from "@/components/ClientOnly";
 
 const PatientProfile = () => {
   const { user, loading } = useAuth();
@@ -44,9 +45,11 @@ const PatientProfile = () => {
                 <p className="text-center text-gray-600">
                     Your doctor can scan this code to access your medical records.
                 </p>
-                <div className="p-4 bg-white rounded-lg flex justify-center">
-                    {/* The QR code value is the patient's unique user ID from Firebase Auth */}
-                    <QRCode value={user.uid} size={256} />
+                <div className="p-4 bg-white rounded-lg flex justify-center h-[288px] w-[288px]">
+                    {/* The QR code is wrapped in ClientOnly to prevent hydration errors */}
+                    <ClientOnly>
+                        <QRCode value={user.uid} size={256} />
+                    </ClientOnly>
                 </div>
                 <p className="text-center text-sm text-gray-500">
                     <strong>User ID:</strong> {user.uid}
