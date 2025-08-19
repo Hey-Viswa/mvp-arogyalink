@@ -51,8 +51,12 @@ const FileUpload = ({ onUploadSuccess }: { onUploadSuccess: () => void }) => {
 
       setFile(null);
       onUploadSuccess(); // Callback to refresh the document list
-    } catch (err: any) {
-      setError("Failed to upload file: " + err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError("Failed to upload file: " + err.message);
+      } else {
+        setError("An unexpected error occurred during file upload.");
+      }
     } finally {
       setUploading(false);
     }

@@ -59,48 +59,69 @@ const parsePrescription = (text: string): PrescriptionItem[] => {
 };
 
 
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onresult: (event: SpeechRecognitionEvent) => void;
+  start: () => void;
+  stop: () => void;
+}
+
+interface SpeechRecognitionEvent extends Event {
+  resultIndex: number;
+  results: SpeechRecognitionResultList;
+}
+
+
 const VoiceScribe = ({ patientId }: { patientId: string }) => {
   const { user } = useAuth();
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [parsedItems, setParsedItems] = useState<PrescriptionItem[]>([]);
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
       recognitionRef.current = new SpeechRecognition();
       const recognition = recognitionRef.current;
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.lang = 'en-US';
+      if (recognition) {
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
 
-      recognition.onresult = (event: any) => {
-        let interimTranscript = "";
-        let finalTranscript = "";
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          if (event.results[i].isFinal) {
-            finalTranscript += event.results[i][0].transcript;
-          } else {
-            interimTranscript += event.results[i][0].transcript;
+        recognition.onresult = (event: SpeechRecognitionEvent) => {
+          let interimTranscript = "";
+          let finalTranscript = "";
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+              finalTranscript += event.results[i][0].transcript;
+            } else {
+              interimTranscript += event.results[i][0].transcript;
+            }
           }
-        }
-        setTranscript(transcript + finalTranscript + interimTranscript);
-        if (finalTranscript) {
-             setParsedItems(parsePrescription(transcript + finalTranscript));
-        }
-      };
+          setTranscript(transcript + finalTranscript + interimTranscript);
+          if (finalTranscript) {
+               setParsedItems(parsePrescription(transcript + finalTranscript));
+          }
+        };
+      }
     }
   }, [transcript]);
 
   const handleListen = () => {
     const recognition = recognitionRef.current;
-    if (isListening) {
-      recognition.stop();
-      setIsListening(false);
-    } else {
-      recognition.start();
-      setIsListening(true);
+    if (recognition) {
+      if (isListening) {
+        recognition.stop();
+        setIsListening(false);
+      } else {
+        recognition.start();
+        setIsListening(true);
+      }
     }
   };
 

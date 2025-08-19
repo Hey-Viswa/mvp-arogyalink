@@ -3,7 +3,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { doc, getDoc, collection, query, where, onSnapshot, orderBy } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, onSnapshot, orderBy, Timestamp } from "firebase/firestore";
 import { db } from "@/firebase";
 import Link from "next/link";
 import VoiceScribe from "@/components/VoiceScribe";
@@ -18,7 +18,7 @@ interface Document {
   id: string;
   fileName: string;
   fileUrl: string;
-  createdAt: any;
+  createdAt: Timestamp;
 }
 
 const PatientRecordPage = () => {
