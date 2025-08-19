@@ -14,15 +14,11 @@ export default function HomePage() {
           Built for the modern healthcare professional and patient.
         </p>
         <div className="mt-8 flex justify-center gap-4">
-          <Link href="/login" legacyBehavior>
-            <a className="px-6 py-3 text-lg font-semibold text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Login
-            </a>
+          <Link href="/login" className="px-6 py-3 text-lg font-semibold text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Login
           </Link>
-          <Link href="/signup" legacyBehavior>
-            <a className="px-6 py-3 text-lg font-semibold text-indigo-700 bg-indigo-100 rounded-md hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Sign Up
-            </a>
+          <Link href="/signup" className="px-6 py-3 text-lg font-semibold text-indigo-700 bg-indigo-100 rounded-md hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Sign Up
           </Link>
         </div>
       </div>
