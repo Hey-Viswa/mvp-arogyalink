@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { collection, query, where, onSnapshot, orderBy } from "firebase/firestore";
+import { collection, query, where, onSnapshot, orderBy, Timestamp } from "firebase/firestore";
 import { db } from "../firebase";
 
 interface Document {
   id: string;
   fileName: string;
   fileUrl: string;
-  createdAt: any;
+  createdAt: Timestamp;
 }
 
 const DocumentList = ({ refreshTrigger }: { refreshTrigger: number }) => {

@@ -25,15 +25,14 @@ const QrScanner = ({ onScanSuccess }: QrScannerProps) => {
             /* verbose= */ false
         );
 
-        const handleSuccess = (decodedText: string, decodedResult: any) => {
+        const handleSuccess = (decodedText: string) => {
             // Stop scanning after a successful scan
             scanner.clear();
             onScanSuccess(decodedText);
         };
 
-        const handleError = (errorMessage: string) => {
+        const handleError = () => {
             // We can ignore most errors, as they happen frequently (e.g., no QR code in view)
-            // console.error(errorMessage);
         };
 
         scanner.render(handleSuccess, handleError);
